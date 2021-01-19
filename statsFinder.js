@@ -11,6 +11,14 @@ const calcStat = (base, iv, ev, level, nMod = 1) => Math.round(((base*2+iv+ev/4.
 
 const names = ["hp","atk","def","spa","spd","spe"];
 
+const natureValues = [
+    ["hardy","lonely","adamant","naughty","brave"],
+    ["bold","docile","impish","lax","relaxed"],
+    ["modest","mild","bashful","rash","quiet"],
+    ["calm","gentle","careful","quirky","sassy"],
+    ["timid","hasty","jolly","naive","serious"]
+];
+
 class StatFinder {
     EV_TOTAL = 510;
     EV_MAX = 252;
@@ -22,10 +30,11 @@ class StatFinder {
     evs;
     ivs;
     nature;
-    constructor(level = 100, baseStats = [0], endStats = [0]) {
+    constructor(level = 100, baseStats = [0], endStats = [0], nature) {
         this.level = level;
         this.baseStats = baseStats;
         this.endStats = endStats;
+        this.nature = nature ? nature.toLowerCase() : undefined;
         if(level < 1 || level > 100)
             throw new Exception("Level Must be between 1 and 100 not: "+level);
         if(this.baseStats.length !== names.length)
@@ -107,9 +116,6 @@ class StatFinder {
         if(ignoreStats.indexOf(0) < 0)
             ignoreStats.push(0);
         if((isUsedNegative && !isUsedBeneficial) || (!isUsedNegative && isUsedBeneficial)) {
-            // TODO this means i used a beneficial nature without using a negative or vice versa
-            // could be anything except for the stats with both 31 iv and 252 ev if they match
-            // console.log("NOT IMPLEMENTED");
             // do another pass but only change ivs and ignore the beneficial stat
             let nEvTotal = evTotal;
             evs.filter((a,i)=>ignoreStats.indexOf(i) < 0).forEach(a=>nEvTotal+=a);
@@ -141,7 +147,9 @@ class StatFinder {
     }
 
     calculate() {
-        return this._calculateStats();
+        const natureIndexes = this.getNatureIndexes(this.nature);
+        return this._calculateStats(undefined,undefined,undefined,undefined,false,false,
+            natureIndexes ? natureIndexes[0]+1 : undefined,natureIndexes ? natureIndexes[1] +1: undefined);
     }
     isValid(ivs,evs,nature){
         if(!this.isStatSame(ivs,evs,nature))
@@ -165,14 +173,18 @@ class StatFinder {
         }
         return true;
     }
+
+    getNatureIndexes(nature) {
+        if(!nature)
+            return undefined;
+        for(let i = 0; i<natureValues.length; i++)
+            for(let j = 0; j<natureValues[i].length; j++)
+                if(nature === natureValues[i][j])
+                    return [i,j];
+        return undefined; //usually this happens due to a misspelling of nature
+    }
+
     getNature(natures){
-        const natureValues = [
-            ["hardy","lonely","adamant","naughty","brave"],
-            ["bold","docile","impish","lax","relaxed"],
-            ["modest","mild","bashful","rash","quiet"],
-            ["calm","gentle","careful","quirky","sassy"],
-            ["timid","hasty","jolly","naive","serious"]
-        ];
         if(natures.indexOf(this.NATURE[0]) < 0)
             return "Serious";
         const plusStat = natures.indexOf(this.NATURE[0])-1;
@@ -196,13 +208,14 @@ class StatFinder {
         return this.nature;
     }
 }
-const endStats = [343,162,251,175,210,148];
-const baseStats = [100,50,80,60,80,50];
-const level = 100;
-
-const s = new StatFinder(level,baseStats,endStats);
-const v = s.calculate();
-console.log(v);
-for(let i = 0; i<names.length; i++)
-    console.log(endStats[i]+" ---- "+(i===0?calcHP(baseStats[i],v.ivs[i],v.evs[i],level):calcStat(baseStats[i],v.ivs[i],v.evs[i],level,v.natures[i])))
-console.log(s.isValid(v.ivs,v.evs,v.natures,debug=true))
+// const endStats = [343,162,251,175,210,148];
+// const baseStats = [100,50,80,60,80,50];
+// const level = 100;
+//
+// const s = new StatFinder(level,baseStats,endStats,"bold");
+// const v = s.calculate();
+// console.log(v);
+// for(let i = 0; i<names.length; i++)
+//     console.log(endStats[i]+" ---- "+(i===0?calcHP(baseStats[i],v.ivs[i],v.evs[i],level):calcStat(baseStats[i],v.ivs[i],v.evs[i],level,v.natures[i])))
+// console.log(s.isValid(v.ivs,v.evs,v.natures,debug=true))
+console.log(new StatFinder(100,[100,50,80,60,80,50],[343,162,251,175,210,148]).calculate())
