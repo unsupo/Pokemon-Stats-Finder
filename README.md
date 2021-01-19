@@ -1,4 +1,8 @@
 # Pokemon-Stats-Finder
+```bash
+npm install @unsupo/stats-finder
+```
+
 Use this code to help determine the evs and ivs as well as the nature
 for a particular pokemon.
 
