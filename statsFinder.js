@@ -218,4 +218,4 @@ class StatFinder {
 // for(let i = 0; i<names.length; i++)
 //     console.log(endStats[i]+" ---- "+(i===0?calcHP(baseStats[i],v.ivs[i],v.evs[i],level):calcStat(baseStats[i],v.ivs[i],v.evs[i],level,v.natures[i])))
 // console.log(s.isValid(v.ivs,v.evs,v.natures,debug=true))
-console.log(new StatFinder(100,[100,50,80,60,80,50],[343,162,251,175,210,148]).calculate())
+// console.log(new StatFinder(100,[100,50,80,60,80,50],[343,162,251,175,210,148]).calculate())

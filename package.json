@@ -1,8 +1,8 @@
 {
   "name": "@unsupo/stats-finder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use this code to help determine the evs and ivs as well as the nature for a particular pokemon.",
-  "main": "index.js",
+  "main": "statsFinder.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
