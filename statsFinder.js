@@ -19,7 +19,7 @@ const natureValues = [
     ["timid","hasty","jolly","naive","serious"]
 ];
 
-export class StatFinder {
+class StatFinder {
     EV_TOTAL = 510;
     EV_MAX = 252;
     IV_MAX = 31;
@@ -208,6 +208,9 @@ export class StatFinder {
         return this.nature;
     }
 }
+
+module.exports = { StatFinder }
+
 // const endStats = [343,162,251,175,210,148];
 // const baseStats = [100,50,80,60,80,50];
 // const level = 100;

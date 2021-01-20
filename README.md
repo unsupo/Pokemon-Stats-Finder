@@ -1,6 +1,11 @@
 # Pokemon-Stats-Finder
+### Install
 ```bash
 npm install @unsupo/stats-finder
+```
+### Import
+```javascript
+const StatFinder = require("@unsupo/stats-finder").StatFinder;
 ```
 
 Use this code to help determine the evs and ivs as well as the nature
