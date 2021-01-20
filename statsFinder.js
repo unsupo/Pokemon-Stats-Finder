@@ -19,7 +19,7 @@ const natureValues = [
     ["timid","hasty","jolly","naive","serious"]
 ];
 
-class StatFinder {
+export class StatFinder {
     EV_TOTAL = 510;
     EV_MAX = 252;
     IV_MAX = 31;
